@@ -34,7 +34,7 @@ export const Editor = defineComponent({
   props: editorProps,
   setup: (props: IPropTypes, ctx) => {
     let conf = props.init ? { ...props.init, ...defaultInitValues } : { ...defaultInitValues };
-    const { disabled, modelValue, tagName } = toRefs(props);
+    const { modelValue, tagName } = toRefs(props);
     const element: Ref<Element | null> = ref(null);
     let vueEditor: any = null;
     const elementId: string = props.id || uuid('tiny-vue');
@@ -52,7 +52,7 @@ export const Editor = defineComponent({
       const content = getContent(mounting);
       const finalInit = {
         ...conf,
-        readonly: props.disabled,
+        // readonly: props.disabled,
         target: element.value,
         plugins: mergePlugins(conf.plugins, props.plugins),
         toolbar: props.toolbar || (conf.toolbar),
@@ -74,9 +74,9 @@ export const Editor = defineComponent({
     watch(disabled, (disable) => {
       if (vueEditor !== null) {
         if (typeof vueEditor.mode?.set === 'function') {
-          vueEditor.mode.set(disable ? 'readonly' : 'design');
+          vueEditor.mode.set('design');
         } else {
-          vueEditor.setMode(disable ? 'readonly' : 'design');
+          vueEditor.setMode('design');
         }
       }
     });
